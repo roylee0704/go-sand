@@ -5,4 +5,19 @@ To fool around with the mysql database of Metafile, particularly tables related 
 
 ## Techs:
 - mysql.
-- binary
+- [mssql](https://github.com/denisenkom/go-mssqldb).
+
+
+### mysql
+#### connection string
+```
+username:password@tcp(ip:port)/database
+```
+
+### mssql
+
+#### connection string:
+
+```
+Server=myServerAddress;Database=myDatabase;User Id=myUsername;Password=myPassword;Failover Partner=myMirror;Max Pool Size=200;Compatibility Mode=Sybase
+```
