@@ -6,6 +6,7 @@ To fool around with the mysql database of Metafile, particularly tables related 
 ## Techs:
 - mysql.
 - [mssql](https://github.com/denisenkom/go-mssqldb).
+- all-drivers: https://github.com/golang/go/wiki/SQLDrivers
 
 
 ### mysql
