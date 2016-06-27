@@ -22,10 +22,19 @@ func Benchmark(b *testing.B) {
 	cakeshop.Work(b.N) // 244 ms
 }
 
+// adding buffers has no effect.
 func BenchmarkBuffer(b *testing.B) {
-	// adding buffers has no effect.
 	cakeshop := defaults
 	cakeshop.BakeBuf = 10
 	cakeshop.IceBuf = 10
 	cakeshop.Work(b.N) // 244 ms
+}
+
+// adding variability would result in longer run time.
+func BenchmarkVariable(b *testing.B) {
+	cakeshop := defaults
+	cakeshop.BakeStdDev = cakeshop.BakeTime / 4
+	cakeshop.IceStdDev = cakeshop.IceStdDev / 4
+
+	cakeshop.Work(b.N)
 }
