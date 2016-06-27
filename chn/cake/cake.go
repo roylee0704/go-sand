@@ -31,6 +31,7 @@ func (s *Shop) baker(baked chan<- int) {
 		work(s.BakeTime, s.BakeStdDev)
 		baked <- i // as id
 	}
+	close(baked)
 }
 
 // icer will be the second process.
@@ -40,6 +41,7 @@ func (s *Shop) icer(baked <-chan int, iced chan<- int) {
 		work(s.IceTime, s.IceStdDev)
 		iced <- cake
 	}
+	close(iced)
 }
 
 // inscribe as the third and final process.
@@ -65,15 +67,17 @@ func (s *Shop) v(msg string) {
 	}
 }
 
-// work as the main method
-func (s *Shop) Work() {
-	baked := make(chan int, s.BakeBuf)
-	iced := make(chan int, s.IceBuf)
+// work defines main algorithm for simulation
+func (s *Shop) Work(runs int) {
+	for run := 0; run < runs; run++ {
+		baked := make(chan int, s.BakeBuf)
+		iced := make(chan int, s.IceBuf)
 
-	go s.baker(baked)
+		go s.baker(baked) // one baker
 
-	for i := 0; i < s.NumIcers; i++ {
-		go s.icer(baked, iced) // multiple of same goroutine.
+		for i := 0; i < s.NumIcers; i++ {
+			go s.icer(baked, iced) // n icers.
+		}
+		s.inscribe(iced) // one inscriber
 	}
-	s.inscribe(iced)
 }
