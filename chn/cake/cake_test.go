@@ -19,7 +19,7 @@ var defaults = Shop{
 func Benchmark(b *testing.B) {
 	// baseline: one baker, one icer, one inscriber.
 	cakeshop := defaults
-	cakeshop.Work(b.N) // 235 ms
+	cakeshop.Work(b.N) // 244 ms
 }
 
 func BenchmarkBuffer(b *testing.B) {
@@ -27,5 +27,5 @@ func BenchmarkBuffer(b *testing.B) {
 	cakeshop := defaults
 	cakeshop.BakeBuf = 10
 	cakeshop.IceBuf = 10
-	cakeshop.Work(b.N) // 235 ms
+	cakeshop.Work(b.N) // 244 ms
 }
