@@ -41,12 +41,16 @@ func (s *Shop) icer(baked <-chan int, iced chan<- int) {
 		work(s.IceTime, s.IceStdDev)
 		iced <- cake
 	}
-	close(iced)
+
+	// when its not sequential (numIcers>1), we aren't sure if
+	// other icer has completed, hence, no close
+	// close(iced)
 }
 
 // inscribe as the third and final process.
 func (s *Shop) inscribe(iced <-chan int) {
-	for cake := range iced {
+	for i := 0; i < s.Cakes; i++ {
+		cake := <-iced
 		s.v(fmt.Sprintf("Inscribing cake %d\n", cake))
 		work(s.InscribeTime, s.InscribeStdDev)
 		s.v(fmt.Sprintf("Finished cake %d\n", cake))
@@ -67,7 +71,7 @@ func (s *Shop) v(msg string) {
 	}
 }
 
-// work defines main algorithm for simulation
+// Work defines main algorithm for simulation
 func (s *Shop) Work(runs int) {
 	for run := 0; run < runs; run++ {
 		baked := make(chan int, s.BakeBuf)
