@@ -7,7 +7,27 @@ import (
 func main() {
 	list := []int{-1, 2, 4, -3, 5, 2, -5, 2}
 	best := slowest(list)
+	best = medium(list)
 	fmt.Println("best:", best)
+}
+
+//  o(n * n)
+// 1,2,3,4,5
+// 2,3,4,5
+// 3,4,5,
+// 4,5
+// 5,
+func medium(list []int) int {
+	n := len(list)
+	best := 0
+	for i := 0; i < n; i++ {
+		sum := 0
+		for j := i; j < n; j++ {
+			sum += list[j]
+			best = max(sum, best)
+		}
+	}
+	return best
 }
 
 // naive algo: O(n * n * n)
